@@ -1,7 +1,5 @@
-// imports
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const session = require("express-session");
 
 const authRoutes = require('./routes/auth'); 
@@ -12,7 +10,6 @@ const app = express();
 // middleware
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
 
 app.use(
   session({

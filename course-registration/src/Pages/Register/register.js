@@ -125,11 +125,11 @@ const Register = () => {
                             <input
                                 type="radio"
                                 name="role"
-                                value="teacher"
-                                checked={formData.role === "teacher"}
+                                value="instructor"
+                                checked={formData.role === "instructor"}
                                 onChange={handleChange}
                             />
-                            Teacher
+                            Instructor
                         </label>
                     </div>
 

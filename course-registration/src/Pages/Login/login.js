@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
+import "./login.css";
 
 const Login = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
-    const [error, setError] = useState(""); // for displaying error messages
-    const navigate = useNavigate(); // to redirect after successful login
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    // update formData as the user types
     const handleChange = (e) => {
         setFormData({
             ...formData,
