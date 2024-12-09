@@ -1,7 +1,9 @@
+import React from 'react';
 import logo from './Assets/logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Home from "./Pages/Home/home";
+import Header from  "./Components/Header/header";
 import Login from "./Pages/Login/login";
 import Register from "./Pages/Register/register";
 
@@ -14,6 +16,7 @@ function App() {
   return (
     <>
       <Router>
+        <Header />
         <Routes>
           <Route  path= "/" element={<Home />} />
           <Route path = "/login" element={<Login />} />
