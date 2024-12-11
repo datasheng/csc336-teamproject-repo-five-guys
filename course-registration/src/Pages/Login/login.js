@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import "./login.css";
 
+
+
 const Login = () => {
     const [formData, setFormData] = useState({
         email: "",
@@ -44,8 +46,11 @@ const Login = () => {
     };
 
     return (
+        
         <div className="login-page">
+            
             <div className="wrapper">
+            
                 <form onSubmit={handleSubmit}>
                     <h1>Login</h1>
 
@@ -62,6 +67,7 @@ const Login = () => {
                         />
                         <FaUser className="icon" />
                     </div>
+                    
                     <div className="input-box">
                         <input
                             type="password"
