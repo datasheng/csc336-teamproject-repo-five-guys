@@ -42,7 +42,6 @@ const register = (req, res) => {
 };
 
 
-
 const login = (req, res) => {
     const { email, password } = req.body;
 
@@ -79,4 +78,7 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { register, login };
+module.exports = {
+    register,
+    login
+};
