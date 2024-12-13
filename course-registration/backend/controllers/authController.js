@@ -42,7 +42,6 @@ const register = (req, res) => {
 };
 
 
-
 const login = (req, res) => {
     const { email, password } = req.body;
 
@@ -60,9 +59,9 @@ const login = (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        req.session.userId = row.u_id;
-        req.session.firstName = row.first_name;
-        req.session.lastName = row.last_name;
+        req.session.id = row.u_id;
+        req.session.first_name = row.first_name;
+        req.session.last_name = row.last_name;
         req.session.type = row.type;
 
         // debug log
@@ -79,4 +78,7 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { register, login };
+module.exports = {
+    register,
+    login
+};
