@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { auth, getDashboard, getCreateDashboard } = require('../controllers/userController');
+const { auth, getInstructorDash , getCreateSection } = require('../controllers/userController');
 
 
-router.get('/dashboard', auth, getDashboard);
-router.get('/dashboard/create', auth, getCreateDashboard);
+router.get('/instructor', auth, getInstructorDash);
+router.get('/dashboard/create', auth, getCreateSection);
 
 
 module.exports = router;

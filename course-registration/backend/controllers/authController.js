@@ -59,13 +59,14 @@ const login = (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        req.session.id = row.u_id;
-        req.session.first_name = row.first_name;
-        req.session.last_name = row.last_name;
-        req.session.type = row.type;
+        req.session.user = { userId: row.u_id,
+            first_name: row.first_name,
+            last_name: row.last_name,
+            type: row.type
+        };
 
         // debug log
-        console.log('Session:', req.session);
+        console.log('LOGGED IN:', req.session);
 
         res.status(200).json({
             message: "Login successful",

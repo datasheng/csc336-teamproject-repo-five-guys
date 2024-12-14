@@ -6,6 +6,8 @@ import Home from "./Pages/Home/home";
 import Header from  "./Components/Header/header";
 import Login from "./Pages/Login/login";
 import Register from "./Pages/Register/register";
+import InstructorDashboard from "./Pages/InstructorDashboard/instructorDashboard";
+
 
 // Take a look at how the components work here... 
 // Our routes (above) reference the .js files we worked on, so {<Home/>} is really ==> import Home from "./Pages/Home/home"; 
@@ -21,6 +23,7 @@ function App() {
           <Route  path= "/" element={<Home />} />
           <Route path = "/login" element={<Login />} />
           <Route path = "/register" element={<Register />} />
+          <Route path = "/dashboard/instructor" element={<InstructorDashboard />} />
         </Routes>
       </Router>
     </>

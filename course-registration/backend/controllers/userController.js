@@ -2,18 +2,19 @@
 const db = require('../db/database');
 
 const auth = (req, res, next) => {
-    console.log("OK");
-    console.log(req.session);
+    console.log("Session data:", req.session);
     if (!req.session.user) {
+        console.log("nyooo?");
         return res.status(401).json({ error: 'Unauthorized' });
     }
     next();
 };
 
-const getDashboard = (req, res) => {
+const getInstructorDash = (req, res) => {
+    console.log("OOOK");
     const userId = req.session.user.id;
     const type = req.session.user.type;
-
+    console.log(req.session.user);
     if (type === "instructor") {
         db.all(`SELECT * FROM section WHERE instructor_id = ?`, [userId], (err, sections) => {
             if (err) {
@@ -51,7 +52,7 @@ const getDashboard = (req, res) => {
     }
 };
 
-const getCreateDashboard = (req, res) => {
+const getCreateSection = (req, res) => {
     const userId = req.session.user.id;
     const type = req.session.user.type;
 
@@ -74,6 +75,6 @@ const getCreateDashboard = (req, res) => {
 
 module.exports = {
     auth,
-    getDashboard,
-    getCreateDashboard
+    getInstructorDash,
+    getCreateSection
 };
