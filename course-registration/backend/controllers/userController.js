@@ -4,14 +4,12 @@ const db = require('../db/database');
 const auth = (req, res, next) => {
     console.log("Session data:", req.session);
     if (!req.session.user) {
-        console.log("nyooo?");
         return res.status(401).json({ error: 'Unauthorized' });
     }
     next();
 };
 
 const getInstructorDash = (req, res) => {
-    console.log("OOOK");
     const userId = req.session.user.id;
     const type = req.session.user.type;
     console.log(req.session.user);
