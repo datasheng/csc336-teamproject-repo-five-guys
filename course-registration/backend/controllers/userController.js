@@ -1,4 +1,3 @@
-// controllers/userController.js
 const db = require('../db/database');
 
 const auth = (req, res, next) => {
@@ -12,7 +11,7 @@ const auth = (req, res, next) => {
 const getInstructorDash = (req, res) => {
     const userId = req.session.user.id;
     const type = req.session.user.type;
-    console.log(req.session.user);
+
     if (type === "instructor") {
         db.all(`SELECT * FROM section WHERE instructor_id = ?`, [userId], (err, sections) => {
             if (err) {
@@ -67,12 +66,57 @@ const getCreateSection = (req, res) => {
             });
         });
     } else {
-        return res.status(403).json({ error: 'You must be an instructor to create courses.' });
+        return res.status(403).json({ error: 'You must be an instructor to create a section.' });
     }
 };
+
+const postCreateSection = (req, res) => {
+    const userId = req.session.user.id;
+    const type = req.session.user.type;
+
+    if (type !== "instructor") {
+        return res.status(403).json({ error: 'You must be an instructor to create a section.' });
+    }
+
+    // grab inputs from req
+    const {
+        course_id,
+        semester,
+        weekday,
+        start_time,
+        end_time,
+        location,
+        max_seats
+    } = req.body;
+
+    if (!course_id || !semester || !weekday || !start_time || !end_time || !location || !max_seats) {
+        return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const sql = `
+        INSERT INTO section (course_id, instructor_id, semester, weekday, start_time, end_time, location, max_seats, current_seats)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
+    `;
+
+    const params = [course_id, userId, semester, weekday, start_time, end_time, location, max_seats];
+
+    db.run(sql, params, function (err) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error creating section.' });
+        }
+
+        res.status(201).json({ 
+            message: 'Section created successfully.',
+            // section_id: this.lastID 
+        });
+    });
+};
+
 
 module.exports = {
     auth,
     getInstructorDash,
-    getCreateSection
+    getCreateSection,
+    postCreateSection
 };

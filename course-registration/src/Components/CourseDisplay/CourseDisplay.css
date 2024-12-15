@@ -1,0 +1,51 @@
+/* Scoped styles for CourseDisplay component */
+.course-display div {
+    margin: 20px auto;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.course-display h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.course-display table {
+    width: 70%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-display th {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.course-display td {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.course-display tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.course-display tr:hover {
+    background-color: #e8f0fe;
+}
+
+.course-display td:last-child, th:last-child {
+    border-right: none;
+}
+
+
+

@@ -5,6 +5,8 @@ const session = require("express-session");
 
 const authRoutes = require('./routes/auth'); 
 const userRoutes = require('./routes/user'); 
+const courseRoutes = require('./routes/course'); 
+
 
 // init
 const app = express();
@@ -34,9 +36,28 @@ app.use(session({
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/course', courseRoutes);
 
 
 const PORT = process.env.PORT || 5000; 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+
+
+
+
+
+
+  
+});
+
+
+app.get('/courses', (req, res) => {
+  db.all('SELECT * FROM course', [], (err, rows) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+      }
+      res.json(rows);
+  });
 });
