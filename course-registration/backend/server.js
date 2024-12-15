@@ -5,6 +5,8 @@ const session = require("express-session");
 
 const authRoutes = require('./routes/auth'); 
 const userRoutes = require('./routes/user'); 
+const courseRoutes = require('./routes/course'); 
+
 
 // init
 const app = express();
@@ -34,6 +36,7 @@ app.use(session({
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/course', courseRoutes);
 
 
 const PORT = process.env.PORT || 5000; 
