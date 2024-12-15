@@ -43,14 +43,15 @@ const InstructorDashboard = () => {
         <div className="dashboard-page">
             <div className="wrapper">
                 <h1>Welcome {first_name} {last_name}!</h1>
-                <h2>Your Current Course Sections</h2>
+                <h2>Your Current Course Sections:</h2>
                 <div className="sections-container">
                     {sections.length > 0 ? (
                         sections.map((section, index) => (
                             <div key={index} className="section-box">
-                                <h3>{section.name}</h3>
-                                <p><strong>Section ID:</strong> {section.section_id}</p>
-                                <p><strong>Description:</strong> {section.description}</p>
+                                <h3>{section.course_name}</h3>
+                                <p><h4>Section {section.section_id}</h4></p>
+                                <br></br>
+                                <p>{section.semester} - {section.weekday}</p>
                             </div>
                         ))
                     ) : (
