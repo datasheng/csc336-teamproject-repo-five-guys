@@ -1,0 +1,92 @@
+.create-section-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.create-section-page {
+    font-family: Arial, sans-serif;
+    background-color: antialiased;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../../Assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.create-section-page .wrapper {
+    width: 600px;
+    max-width: 90%;
+    background: transparent;
+    color: #fff;
+    padding: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(30px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.create-section-page .wrapper h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.create-section-page .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.create-section-page .form-group label {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.create-section-page .form-group input,
+.create-section-page .form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.create-section-page .form-group input:focus,
+.create-section-page .form-group select:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.create-section-page button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-section-page button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.error-message {
+    color: #ff8080;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: #80ff80;
+    font-size: 14px;
+    margin-bottom: 10px;
+}

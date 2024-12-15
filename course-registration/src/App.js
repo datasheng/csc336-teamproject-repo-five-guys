@@ -7,6 +7,7 @@ import Header from  "./Components/Header/header";
 import Login from "./Pages/Login/login";
 import Register from "./Pages/Register/register";
 import InstructorDashboard from "./Pages/InstructorDashboard/instructorDashboard";
+import CreateCourseSection from "./Pages/CreateCourseSection/createCourseSection";
 
 
 // Take a look at how the components work here... 
@@ -24,6 +25,7 @@ function App() {
           <Route path = "/login" element={<Login />} />
           <Route path = "/register" element={<Register />} />
           <Route path = "/dashboard/instructor" element={<InstructorDashboard />} />
+          <Route path = "/dashboard/create" element={<CreateCourseSection />} />
         </Routes>
       </Router>
     </>

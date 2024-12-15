@@ -11,10 +11,6 @@ const courseRoutes = require('./routes/course');
 // init
 const app = express();
 
-// ejs
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 // middleware
 app.use(cors({
   origin: "http://localhost:3000", // React frontend origin

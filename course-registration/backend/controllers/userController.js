@@ -1,7 +1,7 @@
 const db = require('../db/database');
 
 const auth = (req, res, next) => {
-    console.log("Session data:", req.session);
+    console.log("Session:", req.session);
     if (!req.session.user) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -9,8 +9,7 @@ const auth = (req, res, next) => {
 };
 
 const getInstructorDash = (req, res) => {
-    const userId = req.session.user.id;
-    const type = req.session.user.type;
+    const { userId, type } = req.session.user;
 
     if (type === "instructor") {
         db.all(`SELECT * FROM section WHERE instructor_id = ?`, [userId], (err, sections) => {
@@ -50,14 +49,14 @@ const getInstructorDash = (req, res) => {
 };
 
 const getCreateSection = (req, res) => {
-    const userId = req.session.user.id;
-    const type = req.session.user.type;
+    const { userId, type } = req.session.user;
 
     if (type === "instructor") {
         db.all(`SELECT * FROM course`, (err, courses) => {
             if (err) {
                 return res.status(500).json({ error: 'Error retrieving courses.' });
             }
+
             res.status(200).json({
                 courses,
                 userId,
@@ -71,8 +70,7 @@ const getCreateSection = (req, res) => {
 };
 
 const postCreateSection = (req, res) => {
-    const userId = req.session.user.id;
-    const type = req.session.user.type;
+    const { userId, type } = req.session.user;
 
     if (type !== "instructor") {
         return res.status(403).json({ error: 'You must be an instructor to create a section.' });
