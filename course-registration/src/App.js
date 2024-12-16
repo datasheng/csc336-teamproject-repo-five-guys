@@ -8,6 +8,7 @@ import Login from "./Pages/Login/login";
 import Register from "./Pages/Register/register";
 import InstructorDashboard from "./Pages/InstructorDashboard/instructorDashboard";
 import CreateCourseSection from "./Pages/CreateCourseSection/createCourseSection";
+import LandingPage from './Pages/Navigation/navigation';
 
 
 // Take a look at how the components work here... 
@@ -22,10 +23,24 @@ function App() {
         <Header />
         <Routes>
           <Route  path= "/" element={<Home />} />
+          <Route path = "/home" element={<LandingPage />} />
           <Route path = "/login" element={<Login />} />
           <Route path = "/register" element={<Register />} />
           <Route path = "/dashboard/instructor" element={<InstructorDashboard />} />
           <Route path = "/dashboard/create" element={<CreateCourseSection />} />
+        
+
+        {/* 404 if we try to access an invalid path */}
+        <Route path="*" element=
+          {<div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            textAlign: 'center',
+           }}> 
+           <h1>404 - Page Not Found</h1>
+          </div>} />
         </Routes>
       </Router>
     </>
