@@ -11,6 +11,8 @@ import CreateCourseSection from "./Pages/CreateCourseSection/createCourseSection
 import LandingPage from './Pages/Navigation/navigation';
 
 
+
+
 // Take a look at how the components work here... 
 // Our routes (above) reference the .js files we worked on, so {<Home/>} is really ==> import Home from "./Pages/Home/home"; 
 // React creates a tree with nodes when compiling. This app.js should be the trunk of our tree.
