@@ -11,10 +11,6 @@ const courseRoutes = require('./routes/course');
 // init
 const app = express();
 
-// ejs
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 // middleware
 app.use(cors({
   origin: "http://localhost:3000", // React frontend origin
@@ -50,6 +46,18 @@ app.listen(PORT, () => {
 
   
 });
+
+
+app.get('/courses', (req, res) => {
+  db.all('SELECT * FROM course', [], (err, rows) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+      }
+      res.json(rows);
+  });
+});
+
 
 
 app.get('/courses', (req, res) => {

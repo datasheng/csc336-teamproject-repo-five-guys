@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CourseDisplay.css'; 
-
 const CourseDisplay = () => {
     const [courses, setCourses] = useState([]);
-
     useEffect(() => {
         fetch('http://localhost:5000/courses')
             .then(response => {
@@ -19,7 +17,6 @@ const CourseDisplay = () => {
                 console.error('Error fetching courses:', error);
             });
     }, []);
-
     return (
         <div className='course-display'>
             <h1>Courses</h1>
@@ -44,5 +41,4 @@ const CourseDisplay = () => {
         </div>
     );
 };
-
 export default CourseDisplay;
