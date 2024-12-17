@@ -36,24 +36,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/course', courseRoutes);
 
-// Instructor: Add a new course section
-app.post('/api/sections', (req, res) => {
-  const { course_id, instructor_id, semester, weekday, start_time, end_time, location, max_seats } = req.body;
-
-  const query = `
-    INSERT INTO section (course_id, instructor_id, semester, weekday, start_time, end_time, location, max_seats, current_seats)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
-  `;
-
-  db.query(query, [course_id, instructor_id, semester, weekday, start_time, end_time, location, max_seats], (err) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Failed to add section' });
-    }
-    res.status(201).json({ message: 'Section added successfully' });
-  });
-});
-
 
 // Student: Enroll in a section
 app.post('/api/enrollments', (req, res) => {
