@@ -9,6 +9,7 @@ import Register from "./Pages/Register/register";
 import InstructorDashboard from "./Pages/InstructorDashboard/instructorDashboard";
 import CreateCourseSection from "./Pages/CreateCourseSection/createCourseSection";
 import LandingPage from './Pages/Navigation/navigation';
+import CourseEnroller from './Pages/CourseEnrollment/courseEnrollment';
 
 
 
@@ -30,6 +31,7 @@ function App() {
           <Route path = "/register" element={<Register />} />
           <Route path = "/dashboard/instructor" element={<InstructorDashboard />} />
           <Route path = "/dashboard/create" element={<CreateCourseSection />} />
+          <Route path = "/courses" element={<CourseEnroller />} />
         
 
         {/* 404 if we try to access an invalid path */}
