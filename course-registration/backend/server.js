@@ -54,22 +54,6 @@ app.post('/api/sections', (req, res) => {
   });
 });
 
-// Student: Fetch all available sections
-app.get('/api/sections', (req, res) => {
-  const query = `
-    SELECT s.s_id, c.course_name, c.course_code, s.semester, s.weekday, s.start_time, s.end_time, s.location, s.max_seats, s.current_seats
-    FROM section AS s
-    JOIN course AS c ON s.course_id = c.c_id
-  `;
-
-  db.query(query, (err, rows) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-    res.json(rows);
-  });
-});
 
 // Student: Enroll in a section
 app.post('/api/enrollments', (req, res) => {

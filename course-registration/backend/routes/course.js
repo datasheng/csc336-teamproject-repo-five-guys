@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
+const { getListing } = require('../controllers/courseController');
 
 // Fetch all courses
 router.get('/', (req, res) => {
@@ -12,18 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // Fetch all sections
-router.get('/sections', (req, res) => {
-  const query = `
-    SELECT s.s_id, c.course_name, c.course_code, s.semester, s.weekday, 
-           s.start_time, s.end_time, s.location, s.max_seats, s.current_seats
-    FROM section AS s
-    JOIN course AS c ON s.course_id = c.c_id
-  `;
-  db.query(query, (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
+router.get('/sections', getListing);
 
 // Instructor: Add a new section
 router.post('/sections', (req, res) => {
