@@ -17,6 +17,7 @@ const CreateCourseSection = () => {
     const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
+    // Fetch available courses on component mount
     useEffect(() => {
         const fetchCourses = async () => {
             try {
@@ -30,7 +31,13 @@ const CreateCourseSection = () => {
                 }
 
                 const data = await response.json();
-                setCourses(data.courses);
+
+                // Validate backend response structure
+                if (data && data.courses) {
+                    setCourses(data.courses);
+                } else {
+                    throw new Error("Invalid response from server.");
+                }
             } catch (err) {
                 setError(err.message);
             }
@@ -39,6 +46,7 @@ const CreateCourseSection = () => {
         fetchCourses();
     }, []);
 
+    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
@@ -47,13 +55,14 @@ const CreateCourseSection = () => {
         }));
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setSuccess("");
 
-        if (formData.max_seats < 0) {
-            setError("Max seats cannot be negative.");
+        if (formData.max_seats <= 0) {
+            setError("Max seats must be a positive number.");
             return;
         }
 
@@ -88,6 +97,7 @@ const CreateCourseSection = () => {
                 {success && <p className="success-message">{success}</p>}
 
                 <form onSubmit={handleSubmit}>
+                    {/* Course Selection */}
                     <div className="form-group">
                         <label htmlFor="course_id">Course</label>
                         <select
@@ -106,6 +116,7 @@ const CreateCourseSection = () => {
                         </select>
                     </div>
 
+                    {/* Semester Selection */}
                     <div className="form-group">
                         <label htmlFor="semester">Semester</label>
                         <select
@@ -123,12 +134,14 @@ const CreateCourseSection = () => {
                         </select>
                     </div>
 
+                    {/* Other Form Fields */}
                     <div className="form-group">
                         <label htmlFor="weekday">Weekday</label>
                         <input
                             type="text"
                             id="weekday"
                             name="weekday"
+                            placeholder="e.g., Monday"
                             value={formData.weekday}
                             onChange={handleChange}
                             required
@@ -165,6 +178,7 @@ const CreateCourseSection = () => {
                             type="text"
                             id="location"
                             name="location"
+                            placeholder="e.g., Room 101"
                             value={formData.location}
                             onChange={handleChange}
                             required
@@ -183,6 +197,7 @@ const CreateCourseSection = () => {
                         />
                     </div>
 
+                    {/* Submit Button */}
                     <button type="submit">Create Section</button>
                 </form>
             </div>

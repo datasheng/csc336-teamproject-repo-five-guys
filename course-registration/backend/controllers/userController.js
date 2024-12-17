@@ -1,5 +1,6 @@
 const db = require('../db/database');
 
+// Middleware: Authorization check
 const auth = (req, res, next) => {
     console.log("Session:", req.session);
     if (!req.session.user) {
@@ -8,6 +9,7 @@ const auth = (req, res, next) => {
     next();
 };
 
+// Instructor Dashboard: View Sections
 const getInstructorDash = (req, res) => {
     const { userId, type } = req.session.user;
 
@@ -40,48 +42,11 @@ const getInstructorDash = (req, res) => {
             });
         });
     } else {
-        const query = `
-            SELECT 
-                section.s_id AS section_id,
-                section.semester,
-                section.weekday,
-                section.start_time,
-                section.end_time,
-                course.c_id AS course_id,
-                course.course_name,
-                course.description,
-                enrollment.status
-            FROM section
-            JOIN course ON section.course_id = course.c_id
-            JOIN enrollment ON section.s_id = enrollment.section_id
-            WHERE enrollment.student_id = ?
-        `;
-
-        db.query(query, [userId], (err, sections) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Error retrieving sections.' });
-            }
-
-            const current_sections = new Map();
-            for (const section of sections) {
-                if (current_sections.has(section.section_id) && section.status === "Dropped") {
-                    current_sections.delete(section.section_id);
-                } else {
-                    current_sections.set(section.section_id, section);
-                }
-            }
-
-            res.status(200).json({
-                current_sections: Array.from(current_sections.values()),
-                type,
-                first_name: req.session.user.first_name,
-                last_name: req.session.user.last_name
-            });
-        });
+        return res.status(403).json({ error: 'Unauthorized: Not an instructor.' });
     }
 };
 
+// Instructor: View Courses to Create Section
 const getCreateSection = (req, res) => {
     const { userId, type } = req.session.user;
 
@@ -106,6 +71,7 @@ const getCreateSection = (req, res) => {
     }
 };
 
+// Instructor: Create Section
 const postCreateSection = (req, res) => {
     const { userId, type } = req.session.user;
 
@@ -141,7 +107,48 @@ const postCreateSection = (req, res) => {
 
         res.status(201).json({ 
             message: 'Section created successfully.',
-            section_id: results.insertId // Use insertId for MySQL
+            section_id: results.insertId
+        });
+    });
+};
+
+// Student: Enroll in a Section
+const postEnrollSection = (req, res) => {
+    const { userId, type } = req.session.user;
+
+    if (type !== "student") {
+        return res.status(403).json({ error: 'Only students can enroll in sections.' });
+    }
+
+    const { section_id } = req.body;
+
+    if (!section_id) {
+        return res.status(400).json({ error: 'Section ID is required.' });
+    }
+
+    // Check for duplicate enrollment
+    const checkQuery = "SELECT * FROM enrollment WHERE student_id = ? AND section_id = ?";
+    db.query(checkQuery, [userId, section_id], (err, rows) => {
+        if (err) {
+            console.error("Error checking enrollment:", err);
+            return res.status(500).json({ error: "Failed to check enrollment." });
+        }
+
+        if (rows.length > 0) {
+            return res.status(400).json({ error: "You are already enrolled in this section." });
+        }
+
+        // Insert enrollment
+        const enrollQuery = `
+            INSERT INTO enrollment (student_id, section_id)
+            VALUES (?, ?)
+        `;
+        db.query(enrollQuery, [userId, section_id], (err) => {
+            if (err) {
+                console.error("Error enrolling in section:", err);
+                return res.status(500).json({ error: "Failed to enroll in section." });
+            }
+            res.status(201).json({ message: "Enrolled successfully!" });
         });
     });
 };
@@ -150,5 +157,6 @@ module.exports = {
     auth,
     getInstructorDash,
     getCreateSection,
-    postCreateSection
+    postCreateSection,
+    postEnrollSection
 };

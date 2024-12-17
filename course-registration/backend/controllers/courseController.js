@@ -1,7 +1,21 @@
 const db = require('../db/database');
 
+// Fetch all course sections with course details
 const getListing = (req, res) => {
-    const query = 'SELECT * FROM section';
+    const query = `
+        SELECT 
+            section.s_id, 
+            course.course_name, 
+            section.semester, 
+            section.weekday, 
+            section.start_time, 
+            section.end_time, 
+            section.location, 
+            section.max_seats, 
+            section.current_seats
+        FROM section
+        JOIN course ON section.course_id = course.c_id
+    `;
 
     db.query(query, (err, rows) => {
         if (err) {
@@ -9,22 +23,23 @@ const getListing = (req, res) => {
             return res.status(500).json({ message: "Server error" });
         }
 
+        // Format the response
         const courseSections = rows.map(row => ({
-            s_id: row.s_id,
-            course_id: row.course_id,
+            section_id: row.s_id,
+            course_name: row.course_name,
             semester: row.semester,
             weekday: row.weekday,
             start_time: row.start_time,
             end_time: row.end_time,
+            location: row.location,
             full: row.max_seats === row.current_seats
         }));
 
-        res.status(200).json({
-            courseSections
-        });
+        res.status(200).json({ courseSections });
     });
 };
 
+// Fetch details for a specific section (includes course details and enrollment status)
 const getDetail = (req, res) => {
     const { s_id } = req.params;
 
@@ -33,10 +48,26 @@ const getDetail = (req, res) => {
     }
 
     const user = req.session?.user || {};
-    const userId = user.id ?? null;
+    const userId = user.userId ?? null;
     const userType = user.type ?? null;
 
-    const sectionQuery = 'SELECT * FROM section WHERE s_id = ?';
+    // Query to fetch section details with course name
+    const sectionQuery = `
+        SELECT 
+            section.s_id, 
+            course.course_name, 
+            section.semester, 
+            section.weekday, 
+            section.start_time, 
+            section.end_time, 
+            section.location, 
+            section.max_seats, 
+            section.current_seats
+        FROM section
+        JOIN course ON section.course_id = course.c_id
+        WHERE section.s_id = ?
+    `;
+
     db.query(sectionQuery, [s_id], (err, results) => {
         if (err) {
             console.error('Database error:', err);
@@ -49,7 +80,7 @@ const getDetail = (req, res) => {
 
         const section = results[0];
 
-        // User is not a student, return section details
+        // If the user is not a student, return section details
         if (userType !== 'student') {
             return res.status(200).json({
                 section,
@@ -59,12 +90,12 @@ const getDetail = (req, res) => {
             });
         }
 
-        // User is a student, check enrollment status
+        // If user is a student, check enrollment status
         const enrollmentQuery = `
             SELECT status 
             FROM enrollment 
             WHERE student_id = ? AND section_id = ? 
-            ORDER BY timestamp DESC 
+            ORDER BY enrollment_date DESC 
             LIMIT 1
         `;
 
