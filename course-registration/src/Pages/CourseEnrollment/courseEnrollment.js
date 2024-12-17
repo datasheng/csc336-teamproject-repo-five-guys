@@ -1,123 +1,128 @@
 import React, { useState, useEffect } from "react";
 
 const CourseEnroller = () => {
-  const [courses, setCourses] = useState([]); // All courses from the backend
-  const [selectedMajor, setSelectedMajor] = useState("Computer Science");
-  const [completedCourses, setCompletedCourses] = useState(["Introduction to Computer Science"]);
-  const [filteredCourses, setFilteredCourses] = useState([]);
+  const [sections, setSections] = useState([]); // All course sections
+  const [error, setError] = useState("");
 
-  // Fetch courses from the backend API
+  // Fetch course sections from the backend
   useEffect(() => {
-    fetch("http://localhost:5000/courses")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch courses");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Transform the data to match the required structure
-        const transformedCourses = data.map((course) => ({
-          id: course.c_id, // Adjust to match the key returned by the backend
-          name: course.course_name, // Adjust key to match backend
-          major: course.department || "Unknown", // Default to "Unknown" if no department exists
-          prerequisites: [] // Placeholder for prerequisites; update dynamically if needed
-        }));
-        setCourses(transformedCourses);
-        setFilteredCourses(transformedCourses);
-      })
-      .catch((error) => console.error("Error fetching courses:", error));
+    const fetchSections = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/course/sections", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!response.ok) throw new Error("Failed to fetch sections.");
+
+        const data = await response.json();
+        setSections(data.courseSections); // Assuming the backend sends "courseSections"
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      }
+    };
+
+    fetchSections();
   }, []);
 
-  // Handle major change
-  const handleMajorChange = (event) => {
-    setSelectedMajor(event.target.value);
-    filterCourses(event.target.value);
+  // Enroll in a section
+  const handleEnroll = (section_id) => {
+    fetch("http://localhost:5000/api/course/enrollments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        student_id: 1, // Replace with logged-in user's ID dynamically
+        section_id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert("Enrolled successfully!");
+        } else {
+          alert("Enrollment failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during enrollment:", error);
+        alert("Enrollment failed. Please try again.");
+      });
   };
 
-  // Filter courses based on major and prerequisites
-  const filterCourses = (major = selectedMajor) => {
-    const availableCourses = courses.filter((course) => {
-      return (
-        course.major === major &&
-        course.prerequisites.every((prereq) => completedCourses.includes(prereq))
-      );
-    });
-    setFilteredCourses(availableCourses);
+  // Unenroll from a section
+  const handleUnenroll = (section_id) => {
+    fetch("http://localhost:5000/api/course/enrollments", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        student_id: 1, // Replace with logged-in user's ID dynamically
+        section_id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert("Unenrolled successfully!");
+        } else {
+          alert("Unenrollment failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during unenrollment:", error);
+        alert("Unenrollment failed. Please try again.");
+      });
   };
 
-  // Enroll in a course
-  const handleEnroll = (course) => {
-    alert(`You have enrolled in ${course.name}!`);
-    setCompletedCourses([...completedCourses, course.name]);
-    filterCourses();
-  };
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Course Enroller</h1>
 
-      {/* Major Filter */}
-      <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="major" style={{ marginRight: "10px" }}>Select Your Major:</label>
-        <select id="major" value={selectedMajor} onChange={handleMajorChange}>
-          <option value="Computer Science">Computer Science</option>
-          <option value="Chemistry">Chemistry</option>
-        </select>
-        <button
-          onClick={() => filterCourses()}
-          style={{
-            marginLeft: "10px",
-            padding: "5px 10px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Apply Filters
-        </button>
-      </div>
-
-      {/* Display Available Courses */}
-      <h2>Available Courses</h2>
-      {filteredCourses.length === 0 ? (
-        <p>No courses available based on your major and prerequisites.</p>
+      {/* Display Course Sections */}
+      <h2>Available Sections</h2>
+      {sections.length === 0 ? (
+        <p>No sections available at this time.</p>
       ) : (
         <ul style={{ listStyleType: "none", padding: 0 }}>
-          {filteredCourses.map((course) => (
+          {sections.map((section) => (
             <li
-              key={course.id}
-              style={{
-                marginBottom: "10px",
-                padding: "10px",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                backgroundColor: "#f9f9f9",
-              }}
+              key={section.section_id}
+              style={{ marginBottom: "10px", border: "1px solid #ddd", padding: "10px", borderRadius: "5px" }}
             >
-              <h3>{course.name}</h3>
-              <p>
-                <strong>Major:</strong> {course.major}
-              </p>
-              {course.prerequisites.length > 0 && (
-                <p>
-                  <strong>Prerequisites:</strong> {course.prerequisites.join(", ")}
-                </p>
-              )}
+              <h3>{section.course_name}</h3>
+              <p><strong>Semester:</strong> {section.semester}</p>
+              <p><strong>Weekday:</strong> {section.weekday}</p>
+              <p><strong>Time:</strong> {section.start_time} - {section.end_time}</p>
+              <p><strong>Seats Available:</strong> {section.max_seats - section.current_seats}</p>
               <button
-                onClick={() => handleEnroll(course)}
+                onClick={() => handleEnroll(section.section_id)}
                 style={{
-                  padding: "5px 10px",
+                  marginRight: "10px",
                   backgroundColor: "#007BFF",
                   color: "white",
+                  padding: "5px 10px",
                   border: "none",
                   borderRadius: "5px",
-                  cursor: "pointer",
                 }}
               >
                 Enroll
+              </button>
+              <button
+                onClick={() => handleUnenroll(section.section_id)}
+                style={{
+                  backgroundColor: "#FF6347",
+                  color: "white",
+                  padding: "5px 10px",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+              >
+                Unenroll
               </button>
             </li>
           ))}

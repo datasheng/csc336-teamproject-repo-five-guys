@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user'); 
 const courseRoutes = require('./routes/course'); 
 
+
 // init
 const app = express();
 
