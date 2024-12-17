@@ -32,6 +32,8 @@ const getListing = (req, res) => {
             start_time: row.start_time,
             end_time: row.end_time,
             location: row.location,
+            max_seats: row.max_seats,
+            current_seats: row.current_seats,
             full: row.max_seats === row.current_seats
         }));
 
