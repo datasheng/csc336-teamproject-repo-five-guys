@@ -199,6 +199,9 @@ const CreateCourseSection = () => {
 
                     {/* Submit Button */}
                     <button type="submit">Create Section</button>
+                    <button type="return" onClick={() => navigate("/dashboard/instructor")}>
+                        Return to Dashboard
+                    </button>
                 </form>
             </div>
         </div>

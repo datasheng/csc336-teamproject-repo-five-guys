@@ -74,3 +74,19 @@
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 5px;
 }
+
+.dashboard-page button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-page button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}

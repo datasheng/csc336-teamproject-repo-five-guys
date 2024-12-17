@@ -29,6 +29,10 @@ const InstructorDashboard = () => {
         fetchInstructorData();
     }, []);
 
+    const handleCreateSection = () => {
+        navigate("/dashboard/create"); // Navigate to the desired path
+    };
+
     if (error) {
         return <div className="dashboard-page">Error: {error}</div>;
     }
@@ -44,6 +48,10 @@ const InstructorDashboard = () => {
             <div className="wrapper">
                 <h1>Welcome {first_name} {last_name}!</h1>
                 <h2>Your Current Course Sections:</h2>
+                <button className="create-section-button" onClick={handleCreateSection}>
+                    Create New Course Section
+                </button>
+
                 <div className="sections-container">
                     {sections.length > 0 ? (
                         sections.map((section, index) => (
@@ -58,6 +66,7 @@ const InstructorDashboard = () => {
                         <p>No sections found.</p>
                     )}
                 </div>
+                
             </div>
         </div>
     );
