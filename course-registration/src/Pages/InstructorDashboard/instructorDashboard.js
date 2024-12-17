@@ -57,16 +57,18 @@ const InstructorDashboard = () => {
                         sections.map((section, index) => (
                             <div key={index} className="section-box">
                                 <h3>{section.course_name}</h3>
-                                <p><h4>Section {section.section_id}</h4></p>
-                                <br></br>
-                                <p>{section.semester} - {section.weekday}</p>
+                                <p><strong>Section ID:</strong> {section.section_id}</p>
+                                <p><strong>Semester:</strong> {section.semester}</p>
+                                <p><strong>Weekday:</strong> {section.weekday}</p>
+                                <p>
+                                    <strong>Time:</strong> {section.start_time} - {section.end_time}
+                                </p>
                             </div>
                         ))
                     ) : (
                         <p>No sections found.</p>
                     )}
                 </div>
-                
             </div>
         </div>
     );
