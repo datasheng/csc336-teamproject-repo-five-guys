@@ -109,6 +109,41 @@ router.delete('/enrollments', (req, res) => {
 });
 
 
+// Fetch sections a user is enrolled in
+router.get('/enrolled-sections', (req, res) => {
+  const userId = req.session?.user?.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized. Please log in." });
+  }
+
+  const query = `
+    SELECT 
+      section.s_id AS section_id,
+      course.course_name,
+      section.semester,
+      section.weekday,
+      section.start_time,
+      section.end_time,
+      section.location
+    FROM enrollment
+    JOIN section ON enrollment.section_id = section.s_id
+    JOIN course ON section.course_id = course.c_id
+    WHERE enrollment.student_id = ?
+  `;
+
+  db.query(query, [userId], (err, rows) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Failed to fetch enrolled sections." });
+    }
+
+    res.status(200).json({ enrolledSections: rows });
+  });
+});
+
+
+
 
 
 module.exports = router;

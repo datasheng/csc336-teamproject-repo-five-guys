@@ -16,8 +16,9 @@ const LandingPage = () => {
             <div className="grid-container">
                 <div className="grid-item">
                     <img src="https://via.placeholder.com/50" alt="Profile"></img>
-                    <h3>Profile</h3>
-                    <p>Manage your profile details.</p>
+                    <h3>View Schedule</h3>
+                    <p>View Enrolled Sections.</p>
+                    <Link to="/enrolled" className="nav-button">Go to Enrollment</Link>
                 </div>
                 <div className="grid-item">
                     <img src="https://via.placeholder.com/50" alt="Enrollment"></img>
