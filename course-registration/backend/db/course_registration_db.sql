@@ -21,9 +21,11 @@ CREATE TABLE user (
     u_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
+    birthdate DATE,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     major VARCHAR(20),
+    is_subscribed BOOLEAN DEFAULT FALSE,
     type ENUM('student', 'instructor') DEFAULT 'student'
 );
 
