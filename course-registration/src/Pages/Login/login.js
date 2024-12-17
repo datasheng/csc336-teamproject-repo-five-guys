@@ -23,7 +23,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-
+    
         try {
             const response = await fetch("http://localhost:5000/api/auth/login", {
                 method: "POST",
@@ -33,11 +33,18 @@ const Login = () => {
                 body: JSON.stringify(formData),
                 credentials: "include",
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
-                navigate("/home");
+                console.log("Login successful:", data);
+    
+                // Redirect based on user role
+                if (data.user.type === "instructor") {
+                    navigate("/dashboard/instructor");
+                } else {
+                    navigate("/home");
+                }
             } else {
                 setError(data.message || "Something went wrong. Please try again.");
             }
@@ -45,7 +52,7 @@ const Login = () => {
             setError("Unable to connect to the server. Please try again later.");
         }
     };
-
+    
     return (
         
         <div className="login-page">
