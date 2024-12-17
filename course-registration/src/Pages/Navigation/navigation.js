@@ -22,24 +22,9 @@ const LandingPage = () => {
                     <p>Manage your profile details.</p>
                 </div>
                 <div class="grid-item">
-                    <img src="https://via.placeholder.com/50" alt="Schedule"></img>
-                    <h3>Schedule Builder</h3>
-                    <p>Plan your course schedule.</p>
-                </div>
-                <div class="grid-item">
                     <img src="https://via.placeholder.com/50" alt="Enrollment"></img>
                     <h3>Course Enrollment</h3>
                     <p>Register for your courses.</p>
-                </div>
-                <div class="grid-item">
-                    <img src="https://via.placeholder.com/50" alt="Degree Works"></img>
-                    <h3>Degree Works</h3>
-                    <p>Track your degree progress.</p>
-                </div>
-                <div class="grid-item">
-                    <img src="https://via.placeholder.com/50" alt="Transcript"></img>
-                    <h3>Transcript</h3>
-                    <p>Request your transcript.</p>
                 </div>
                 <div class="grid-item">
                     <img src="https://via.placeholder.com/50" alt="Blackboard"></img>
