@@ -1,16 +1,20 @@
-// backend/db/db.js
+const mysql = require('mysql2');
 
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+// Create a MySQL database connection
+const db = mysql.createConnection({
+    host: 'localhost',          // Replace with your MySQL server host
+    user: 'root',      // Replace with your MySQL username
+    password: 'password',  // Replace with your MySQL password
+    database: 'course_registration_db', // Your MySQL database name
+});
 
-const dbPath = path.resolve(__dirname, 'course_registration.db');
-
-const db = new sqlite3.Database(dbPath, (err) => {
+// Connect to MySQL
+db.connect((err) => {
     if (err) {
-        console.error('Database opening error: ', err);
-    } else {
-        console.log('Connected to the SQLite database');
+        console.error('Error connecting to MySQL database:', err.message);
+        return;
     }
+    console.log('Connected to MySQL database!');
 });
 
 module.exports = db;

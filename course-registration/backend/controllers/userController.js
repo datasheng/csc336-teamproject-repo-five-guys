@@ -26,12 +26,12 @@ const getInstructorDash = (req, res) => {
             JOIN course ON section.course_id = course.c_id
             WHERE section.instructor_id = ?
         `;
-        db.all(query, [userId], (err, sections) => {
-            console.log(err);
+        db.query(query, [userId], (err, sections) => {
             if (err) {
+                console.error(err);
                 return res.status(500).json({ error: 'Error retrieving sections.' });
             }
-            console.log("OK");
+
             res.status(200).json({
                 sections,
                 type,
@@ -47,17 +47,19 @@ const getInstructorDash = (req, res) => {
                 section.weekday,
                 section.start_time,
                 section.end_time,
-                course.course_id,
+                course.c_id AS course_id,
                 course.course_name,
                 course.description,
-                section.status
+                enrollment.status
             FROM section
             JOIN course ON section.course_id = course.c_id
-            WHERE section.student_id = ?
+            JOIN enrollment ON section.s_id = enrollment.section_id
+            WHERE enrollment.student_id = ?
         `;
 
-        db.all(query, [userId], (err, sections) => {
+        db.query(query, [userId], (err, sections) => {
             if (err) {
+                console.error(err);
                 return res.status(500).json({ error: 'Error retrieving sections.' });
             }
 
@@ -80,13 +82,15 @@ const getInstructorDash = (req, res) => {
     }
 };
 
-
 const getCreateSection = (req, res) => {
     const { userId, type } = req.session.user;
 
     if (type === "instructor") {
-        db.all(`SELECT * FROM course`, (err, courses) => {
+        const query = `SELECT * FROM course`;
+
+        db.query(query, (err, courses) => {
             if (err) {
+                console.error(err);
                 return res.status(500).json({ error: 'Error retrieving courses.' });
             }
 
@@ -109,7 +113,6 @@ const postCreateSection = (req, res) => {
         return res.status(403).json({ error: 'You must be an instructor to create a section.' });
     }
 
-    // grab inputs from req
     const {
         course_id,
         semester,
@@ -128,10 +131,9 @@ const postCreateSection = (req, res) => {
         INSERT INTO section (course_id, instructor_id, semester, weekday, start_time, end_time, location, max_seats, current_seats)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
     `;
-
     const params = [course_id, userId, semester, weekday, start_time, end_time, location, max_seats];
 
-    db.run(sql, params, function (err) {
+    db.query(sql, params, (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Error creating section.' });
@@ -139,11 +141,10 @@ const postCreateSection = (req, res) => {
 
         res.status(201).json({ 
             message: 'Section created successfully.',
-            // section_id: this.lastID 
+            section_id: results.insertId // Use insertId for MySQL
         });
     });
 };
-
 
 module.exports = {
     auth,

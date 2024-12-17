@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './CourseDisplay.css'; 
+
 const CourseDisplay = () => {
     const [courses, setCourses] = useState([]);
+
     useEffect(() => {
-        fetch('http://localhost:5000/courses')
+        fetch('http://localhost:5000/courses') // API endpoint
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -17,6 +19,7 @@ const CourseDisplay = () => {
                 console.error('Error fetching courses:', error);
             });
     }, []);
+
     return (
         <div className='course-display'>
             <h1>Courses</h1>
@@ -30,9 +33,9 @@ const CourseDisplay = () => {
                 </thead>
                 <tbody>
                     {courses.map(course => (
-                        <tr key={course.id}>
-                            <td>{course.id}</td>
-                            <td>{course.name}</td>
+                        <tr key={course.c_id}>
+                            <td>{course.c_id}</td>
+                            <td>{course.course_name}</td>
                             <td>{course.description}</td>
                         </tr>
                     ))}
@@ -41,4 +44,5 @@ const CourseDisplay = () => {
         </div>
     );
 };
+
 export default CourseDisplay;

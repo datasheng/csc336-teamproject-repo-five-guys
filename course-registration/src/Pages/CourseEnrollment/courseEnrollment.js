@@ -1,48 +1,45 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CourseEnroller = () => {
-  // Sample data for courses
-  const courses = [
-    {
-      id: 1,
-      name: "Introduction to Computer Science",
-      major: "Computer Science",
-      prerequisites: [],
-    },
-    {
-      id: 2,
-      name: "Data Structures",
-      major: "Computer Science",
-      prerequisites: ["Introduction to Computer Science"],
-    },
-    {
-      id: 3,
-      name: "Organic Chemistry",
-      major: "Chemistry",
-      prerequisites: [],
-    },
-    {
-      id: 4,
-      name: "Analytical Chemistry",
-      major: "Chemistry",
-      prerequisites: ["Organic Chemistry"],
-    },
-  ];
-
+  const [courses, setCourses] = useState([]); // All courses from the backend
   const [selectedMajor, setSelectedMajor] = useState("Computer Science");
   const [completedCourses, setCompletedCourses] = useState(["Introduction to Computer Science"]);
   const [filteredCourses, setFilteredCourses] = useState([]);
 
+  // Fetch courses from the backend API
+  useEffect(() => {
+    fetch("http://localhost:5000/courses")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch courses");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Transform the data to match the required structure
+        const transformedCourses = data.map((course) => ({
+          id: course.c_id, // Adjust to match the key returned by the backend
+          name: course.course_name, // Adjust key to match backend
+          major: course.department || "Unknown", // Default to "Unknown" if no department exists
+          prerequisites: [] // Placeholder for prerequisites; update dynamically if needed
+        }));
+        setCourses(transformedCourses);
+        setFilteredCourses(transformedCourses);
+      })
+      .catch((error) => console.error("Error fetching courses:", error));
+  }, []);
+
   // Handle major change
   const handleMajorChange = (event) => {
     setSelectedMajor(event.target.value);
+    filterCourses(event.target.value);
   };
 
   // Filter courses based on major and prerequisites
-  const filterCourses = () => {
+  const filterCourses = (major = selectedMajor) => {
     const availableCourses = courses.filter((course) => {
       return (
-        course.major === selectedMajor &&
+        course.major === major &&
         course.prerequisites.every((prereq) => completedCourses.includes(prereq))
       );
     });
@@ -53,7 +50,7 @@ const CourseEnroller = () => {
   const handleEnroll = (course) => {
     alert(`You have enrolled in ${course.name}!`);
     setCompletedCourses([...completedCourses, course.name]);
-    filterCourses(); // Refresh the available courses after enrollment
+    filterCourses();
   };
 
   return (
@@ -68,7 +65,7 @@ const CourseEnroller = () => {
           <option value="Chemistry">Chemistry</option>
         </select>
         <button
-          onClick={filterCourses}
+          onClick={() => filterCourses()}
           style={{
             marginLeft: "10px",
             padding: "5px 10px",
