@@ -12,6 +12,7 @@ import LandingPage from './Pages/Navigation/navigation';
 import CourseEnroller from './Pages/CourseEnrollment/courseEnrollment';
 import Listing from './Pages/Listing/listing';
 import EnrolledSections from './Pages/EnrolledSections/enrolledsections';
+import Details from './Pages/Details/details'
 
 
 
@@ -34,7 +35,9 @@ function App() {
           <Route path = "/dashboard/create" element={<CreateCourseSection />} />
           <Route path = "/courses" element={<CourseEnroller />} />
           <Route path = "/listing" element={<Listing />} />
-          <Route path = "/enrolled" element={<EnrolledSections />} />
+          <Route path = "/enrolled" element={<EnrolledSections />}/>
+          <Route path = "/course/:id" element={<Details />}/>
+         
         
 
         {/* 404 if we try to access an invalid path */}

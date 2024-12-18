@@ -82,7 +82,7 @@ const CreateCourseSection = () => {
             }
 
             setSuccess("Section created successfully!");
-            setTimeout(() => navigate("/dashboard"), 2000);
+            setTimeout(() => navigate("/dashboard/instructor"), 2000);
         } catch (err) {
             setError(err.message);
         }

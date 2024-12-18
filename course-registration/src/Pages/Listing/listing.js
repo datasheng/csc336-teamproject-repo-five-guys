@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./listing.css";
 
 const Listing = () => {
     const [courseSections, setCourseSections] = useState([]);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourseSections = async () => {
@@ -35,13 +37,22 @@ const Listing = () => {
         return <div className="listing-page">Loading...</div>;
     }
 
+    const handleNavigateToDetails = (sectionId) => {
+        navigate(`/course/${sectionId}`);
+    };
+
     return (
         <div className="listing-page">
             <div className="wrapper">
                 <h1>Course Sections</h1>
                 <div className="sections-container">
-                    {courseSections.map((section, index) => (
-                        <div key={index} className="section-box">
+                    {courseSections.map((section) => (
+                        <div
+                            key={section.section_id}
+                            className="section-box"
+                            onClick={() => handleNavigateToDetails(section.section_id)}
+                            style={{ cursor: "pointer" }}
+                        >
                             <h3>{section.course_name}</h3>
                             <p><strong>Section ID:</strong> {section.section_id}</p>
                             <p><strong>Semester:</strong> {section.semester}</p>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
-const { getListing } = require('../controllers/courseController');
+const { getListing, getDetail } = require('../controllers/courseController');
 
 // Fetch all courses
 router.get('/', (req, res) => {
@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 
 // Fetch all sections
 router.get('/sections', getListing);
+router.get('/sections/detail/:s_id', getDetail);
 
 // Instructor: Add a new section
 router.post('/sections', (req, res) => {

@@ -29,8 +29,12 @@ const InstructorDashboard = () => {
         fetchInstructorData();
     }, []);
 
+    const handleNavigateToDetails = (sectionId) => {
+        navigate(`/course/${sectionId}`);
+    };
+
     const handleCreateSection = () => {
-        navigate("/dashboard/create"); // Navigate to the desired path
+        navigate("/dashboard/create");
     };
 
     if (error) {
@@ -55,7 +59,12 @@ const InstructorDashboard = () => {
                 <div className="sections-container">
                     {sections.length > 0 ? (
                         sections.map((section, index) => (
-                            <div key={index} className="section-box">
+                            <div
+                                key={index}
+                                className="section-box"
+                                onClick={() => handleNavigateToDetails(section.section_id)}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <h3>{section.course_name}</h3>
                                 <p><strong>Section ID:</strong> {section.section_id}</p>
                                 <p><strong>Semester:</strong> {section.semester}</p>

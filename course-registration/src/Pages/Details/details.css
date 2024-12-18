@@ -1,0 +1,80 @@
+.details-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.details-page {
+    font-family: Arial, sans-serif;
+    background-color: antialiased;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../../Assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.details-page .wrapper {
+    width: 600px;
+    max-width: 90%;
+    background: transparent;
+    color: #fff;
+    padding: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(30px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.details-page .wrapper h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.details-page .wrapper h2 {
+    font-size: 24px;
+    margin: 20px 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.section-info {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.section-info p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.enrollment-info {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.enrollment-info p {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 10px;
+}
+
+.details-page button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.details-page button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
