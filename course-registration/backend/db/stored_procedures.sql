@@ -39,5 +39,5 @@ DELIMITER ;
 
 -- Execute the stored procedure, need to disable safe updates first
 SET SQL_SAFE_UPDATES = 0;
-CALL UpdateCourseID(3, 2);
+CALL UpdateCourseID(2, 3);
 SET SQL_SAFE_UPDATES = 1;
