@@ -3,8 +3,30 @@ import React, { useState, useEffect } from "react";
 const CourseEnroller = () => {
   const [sections, setSections] = useState([]); // All course sections
   const [error, setError] = useState("");
+  const [userId, setUserId] = useState(null); // State for logged-in user's ID
 
-  // Fetch course sections from the backend
+  // Fetch the logged-in user's ID
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/user/me", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!response.ok) throw new Error("Failed to fetch user.");
+
+        const data = await response.json();
+        setUserId(data.userId); // Assumes API returns { userId: ... }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch user information.");
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Fetch course sections
   useEffect(() => {
     const fetchSections = async () => {
       try {
@@ -15,7 +37,7 @@ const CourseEnroller = () => {
         if (!response.ok) throw new Error("Failed to fetch sections.");
 
         const data = await response.json();
-        setSections(data.courseSections); // Assuming the backend sends "courseSections"
+        setSections(data.courseSections);
       } catch (err) {
         console.error(err);
         setError(err.message);
@@ -27,23 +49,17 @@ const CourseEnroller = () => {
 
   // Enroll in a section
   const handleEnroll = (section_id) => {
+    if (!userId) return alert("Please log in to enroll in a course.");
+
     fetch("http://localhost:5000/api/course/enrollments", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        student_id: 1, // Replace with logged-in user's ID dynamically
-        section_id,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: userId, section_id }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.message) {
-          alert("Enrolled successfully!");
-        } else {
-          alert("Enrollment failed. Please try again.");
-        }
+        if (data.message) alert("Enrolled successfully!");
+        else alert("Enrollment failed. Please try again.");
       })
       .catch((error) => {
         console.error("Error during enrollment:", error);
@@ -53,23 +69,17 @@ const CourseEnroller = () => {
 
   // Unenroll from a section
   const handleUnenroll = (section_id) => {
+    if (!userId) return alert("Please log in to unenroll from a course.");
+
     fetch("http://localhost:5000/api/course/enrollments", {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        student_id: 1, // Replace with logged-in user's ID dynamically
-        section_id,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: userId, section_id }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.message) {
-          alert("Unenrolled successfully!");
-        } else {
-          alert("Unenrollment failed. Please try again.");
-        }
+        if (data.message) alert("Unenrolled successfully!");
+        else alert("Unenrollment failed. Please try again.");
       })
       .catch((error) => {
         console.error("Error during unenrollment:", error);
